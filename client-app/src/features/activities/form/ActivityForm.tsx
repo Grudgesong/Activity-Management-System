@@ -1,4 +1,5 @@
 import { Button, ButtonGroup, Paper, TextField } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { Activity } from "../../../app/models/activity";
 import { ChangeEvent, FormEvent, useState } from "react";
 
@@ -6,12 +7,14 @@ interface Props {
   activity: Activity | undefined;
   closeForm: () => void;
   createOrEdit: (activity: Activity) => void;
+  submitting: boolean;
 }
 
 export default function ActivityForm({
   activity: selectedActivity,
   closeForm,
   createOrEdit,
+  submitting,
 }: Props) {
   const initialState = selectedActivity ?? {
     id: "",
@@ -71,6 +74,7 @@ export default function ActivityForm({
           fullWidth
           value={activity.date}
           name="date"
+          type="date"
           onChange={handleInputChange}
         />
         <TextField
@@ -93,9 +97,14 @@ export default function ActivityForm({
           <Button color="error" onClick={closeForm}>
             Cancel
           </Button>
-          <Button variant="contained" color="success" type="submit">
+          <LoadingButton
+            loading={submitting}
+            variant="contained"
+            color="success"
+            type="submit"
+          >
             Submit
-          </Button>
+          </LoadingButton>
         </ButtonGroup>
       </form>
     </Paper>
